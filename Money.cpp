@@ -3,23 +3,39 @@
 #include <string>
 using namespace std;
 
-Money::Money(long h, unsigned short k, double n) //	Ініціалізатор
+Money::Money(long h, unsigned short k)	//	Введення значень (вручну)
 {
 	hrn = h;
 	kop = k;
-	num = n;
+	cout << "\nГрн: " << h << endl;
+	cout << "Коп: " << k << endl;
+	if (k >= 100) {
+		while (k >= 100) {
+			k -= 100;
+			h++;
+		}
+	}
 }
 
-Money::Money()	//	Зчитування (аналог методу Read)
+Money::Money()	//	Конструктор по замовченню
 {
-	cout << "Грн: ";
-	cin >> hrn;
+	hrn = 0;
+	kop = 0;
+}
+
+Money Money::Read()
+{
+	cout << "\nГрн: ";
+	cin >> this->hrn;
 	cout << "Коп: ";
-	cin >> kop;
-	cout << "Число: ";
-	cin >> num;
-	if (kop >= 100)
-		cout << "Помилка - копійок не може бути більше 99" << endl;
+	cin >> this->kop;
+	if (this->kop >= 100) {
+		while (this->kop >= 100) {
+			this->kop -= 100;
+			this->hrn++;
+		}
+	}
+	else return *this;
 }
 
 string Money::toString()
@@ -31,22 +47,4 @@ string Money::toString()
 void Money::Display()
 {
 	cout << "\nВведено: " << toString() << " грн." << endl;
-	double s = stod(toString());	//	Перетворюємо рядок у числовий тип double
-	double sum = s + num;
-	double minus = s - num;
-	double mn = s * num;
-	bool equal = s == num;	//	Операція порівняння
-	cout << endl;
-	if (num != 0) {	//	Перерівка ділення на 0
-		double dil = s / num;
-		cout << "Ділення: " << dil << endl;
-	}
-	else cout << "Ділення на 0 неможливе!" << endl;
-
-	cout << "Сума: " << sum << endl;
-	cout << "Різниця: " << minus << endl;
-	cout << "Множення: " << mn << endl;
-	cout << "Порівняння: ";
-	if (equal == 1) cout << s << " == " << num << endl;	//	Порівняння двох чисел
-	else cout << s << " != " << num << endl;
 }
